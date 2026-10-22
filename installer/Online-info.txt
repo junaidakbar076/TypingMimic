@@ -1,0 +1,9 @@
+TypingMimic - Online setup
+
+This is the smaller download. The application files are included.
+
+If the Microsoft .NET 8 Desktop Runtime (x64) is missing, setup downloads it from Microsoft and asks Windows for administrator approval to install it. Internet is needed only for this prerequisite. If it is already installed, no runtime download is needed.
+
+Use Offline setup if you have no internet connection or cannot approve a runtime installation. The app itself installs for the current user.
+
+Only use automated typing where permitted. Review PDF text before typing.

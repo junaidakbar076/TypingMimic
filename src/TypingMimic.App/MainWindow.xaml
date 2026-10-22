@@ -1,0 +1,85 @@
+<Window x:Class="TypingMimic.App.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ Title="TypingMimic" Icon="app.ico" Width="1120" Height="820" MinWidth="720" MinHeight="520" Background="#F3F5FA" Foreground="#18243C" FontFamily="Segoe UI" FontSize="14"
+ AllowDrop="True" PreviewDragOver="OnDragOver" PreviewDrop="OnDrop">
+ <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+ <Grid Margin="24">
+  <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+  <StackPanel Margin="0,0,0,18">
+   <TextBlock Text="TypingMimic" FontSize="30" FontWeight="SemiBold"/>
+   <TextBlock Text="Review your text. Choose your pace. Focus your destination." Foreground="#52617A" Margin="0,4,0,0" TextWrapping="Wrap"/>
+  </StackPanel>
+  <Grid Grid.Row="1">
+   <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="24"/><ColumnDefinition Width="290"/></Grid.ColumnDefinitions>
+   <Grid>
+    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <Border Background="#E6ECF7" BorderBrush="#AABBD6" BorderThickness="1" CornerRadius="8" Padding="16">
+     <StackPanel><TextBlock Text="Drop a PDF here, or paste text below" FontWeight="SemiBold" TextWrapping="Wrap"/>
+      <WrapPanel Margin="0,12,0,0" IsEnabled="{Binding CanEdit}">
+       <Button Content="_Open PDF" Click="OpenPdf"/><Button Content="_Paste" Click="PasteText"/><Button Content="_Clear" Click="ClearText"/>
+      </WrapPanel>
+      <TextBlock Text="{Binding PdfInfo}" TextWrapping="Wrap" Margin="0,10,0,0" FontSize="12" Foreground="#52617A"/>
+     </StackPanel>
+    </Border>
+    <Label Grid.Row="1" Content="Editable text pre_view" Target="{Binding ElementName=Preview}" Margin="0,8,0,0"/>
+    <TextBox Grid.Row="2" x:Name="Preview" Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding CanEdit}"
+      MinHeight="300" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+      AutomationProperties.Name="Editable text preview" VerticalContentAlignment="Top" FontSize="15" Padding="14"/>
+    <TextBlock Grid.Row="3" Text="{Binding Estimate}" Margin="0,10,0,0" TextWrapping="Wrap" Foreground="#52617A"/>
+   </Grid>
+   <Border Grid.Column="2" Background="White" CornerRadius="8" Padding="18" BorderBrush="#D9E0ED" BorderThickness="1">
+    <StackPanel IsEnabled="{Binding CanEdit}">
+     <TextBlock Text="Typing settings" FontSize="19" FontWeight="SemiBold"/>
+     <CheckBox Content="_Random English words" IsChecked="{Binding RandomInput}"/>
+     <Label Content="Random characters (1–100000)" Target="{Binding ElementName=RandomLength}"/>
+     <TextBox x:Name="RandomLength" Text="{Binding RandomLength, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RandomInput}" AutomationProperties.Name="Random character count"/>
+     <TextBlock Text="No text needed. Generates complete words from a built-in English word list, with punctuation and optional line breaks. Stops at this character count and keeps your preview intact." TextWrapping="Wrap" FontSize="12" Foreground="#52617A" Margin="0,6,0,0"/>
+     <Label Content="_Words per minute (1–1000)" Target="{Binding ElementName=Wpm}"/>
+     <TextBox x:Name="Wpm" Text="{Binding Wpm, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="Words per minute"/>
+     <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="12"/><ColumnDefinition/></Grid.ColumnDefinitions>
+      <StackPanel><Label Content="Variation % (0–100)" Target="{Binding ElementName=Variation}"/><TextBox x:Name="Variation" Text="{Binding Variation, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="Speed variation percent"/></StackPanel>
+      <StackPanel Grid.Column="2"><Label Content="Errors % (0–25)" Target="{Binding ElementName=ErrorRate}"/><TextBox x:Name="ErrorRate" Text="{Binding ErrorRate, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="Temporary error percent"/></StackPanel>
+     </Grid>
+     <Label Content="Countdown seconds (1–60)" Target="{Binding ElementName=Countdown}"/>
+     <TextBox x:Name="Countdown" Text="{Binding Countdown, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="Countdown seconds"/>
+     <Label Content="Comma pause ms (0–10000)" Target="{Binding ElementName=Comma}"/>
+     <TextBox x:Name="Comma" Text="{Binding Comma, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="Comma pause milliseconds"/>
+     <Label Content="Sentence pause ms (0–10000)" Target="{Binding ElementName=Sentence}"/>
+     <TextBox x:Name="Sentence" Text="{Binding Sentence, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="Sentence pause milliseconds"/>
+     <Label Content="Newline pause ms (0–10000)" Target="{Binding ElementName=Newline}"/>
+     <TextBox x:Name="Newline" Text="{Binding Newline, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="Newline pause milliseconds"/>
+     <Label Content="New line shortcut" Target="{Binding ElementName=NewLineShortcutCombo}"/>
+     <ComboBox x:Name="NewLineShortcutCombo" ItemsSource="{Binding AvailableNewLineShortcuts}" SelectedItem="{Binding NewLineShortcut, Mode=TwoWay}" AutomationProperties.Name="New line shortcut"/>
+     <TextBlock Text="Use Shift+Enter or Ctrl+Enter for chat apps where Enter sends the message." FontSize="12" TextWrapping="Wrap" Foreground="#52617A" Margin="0,4,0,4"/>
+     <CheckBox Content="Preserve line breaks" IsChecked="{Binding Preserve}"/>
+     <CheckBox Content="Keep screen on while typing" IsChecked="{Binding KeepScreenOn}"/>
+     <CheckBox Content="Enable temporary errors" IsChecked="{Binding Errors}"/>
+     <CheckBox IsChecked="{Binding StopOnChange}"><TextBlock Text="Stop if target window changes" TextWrapping="Wrap"/></CheckBox>
+     <TextBlock Text="If line breaks are disabled, each break becomes a space when you start." FontSize="12" TextWrapping="Wrap" Foreground="#52617A" Margin="0,8,0,0"/>
+    </StackPanel>
+   </Border>
+  </Grid>
+  <Border Grid.Row="2" Background="White" CornerRadius="8" Padding="18" Margin="0,18,0,0">
+   <StackPanel>
+    <TextBlock Text="{Binding Validation}" Foreground="#B42318" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite"/>
+    <WrapPanel Margin="0,8,0,12">
+     <Button Content="_Start typing" Command="{Binding StartCommand}" Background="#2458BD" Foreground="White" FontWeight="SemiBold"/>
+     <Button Content="{Binding PauseLabel}" Command="{Binding PauseCommand}"/>
+     <Button Content="S_top" Command="{Binding StopCommand}" Background="#B42318" Foreground="White" FontWeight="Bold"/>
+    </WrapPanel>
+    <TextBlock Text="{Binding Status}" FontWeight="SemiBold" TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite"/>
+    <TextBlock Text="{Binding ScreenStatus}" FontSize="12" Foreground="#52617A" TextWrapping="Wrap" Margin="0,6,0,0"/>
+    <ProgressBar Value="{Binding Progress, Mode=OneWay}" Maximum="100" Height="9" Margin="0,12,0,10" AutomationProperties.Name="Typing progress"/>
+    <WrapPanel><TextBlock Text="{Binding Counts}" Margin="0,0,24,4"/><TextBlock Text="{Binding Elapsed}" Margin="0,0,24,4"/><TextBlock Text="{Binding Remaining}"/></WrapPanel>
+    <TextBlock Text="{Binding ShortcutSummary}" TextWrapping="Wrap" Foreground="#2458BD" Margin="0,10,0,0"/>
+    <WrapPanel IsEnabled="{Binding CanEdit}" Margin="0,8,0,0">
+     <StackPanel Margin="0,0,12,8"><Label Content="Pause / resume shortcut" Target="{Binding ElementName=PauseShortcutInput}"/><TextBox x:Name="PauseShortcutInput" Text="Ctrl+Alt+F11" Width="190" AutomationProperties.Name="Pause or resume shortcut"/></StackPanel>
+     <StackPanel Margin="0,0,12,8"><Label Content="Stop shortcut" Target="{Binding ElementName=StopShortcutInput}"/><TextBox x:Name="StopShortcutInput" Text="Ctrl+Alt+F12" Width="190" AutomationProperties.Name="Stop shortcut"/></StackPanel>
+     <Button Content="_Apply shortcuts" Click="ApplyShortcuts" VerticalAlignment="Bottom" Margin="0,0,0,8"/>
+    </WrapPanel>
+    <TextBlock Text="Use Ctrl or Alt, optionally Shift, plus a letter, digit, or F1–F24. Changes apply for this launch after you click Apply shortcuts." FontSize="12" TextWrapping="Wrap" Foreground="#52617A"/>
+   </StackPanel>
+  </Border>
+  <TextBlock Grid.Row="3" Text="Use only where automated input is permitted. Review PDF extraction before typing. Target editors may apply autocorrect, indentation, or shortcuts." TextWrapping="Wrap" Foreground="#52617A" FontSize="12" Margin="0,14,0,0"/>
+ </Grid>
+ </ScrollViewer>
+</Window>

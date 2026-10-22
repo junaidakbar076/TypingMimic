@@ -1,0 +1,7 @@
+TypingMimic - Offline setup
+
+This download includes the application and its private .NET runtime. No internet connection, separate .NET installation, or administrator approval is needed for the default installation.
+
+The larger download is suitable for computers without .NET and for sharing by USB drive. The runtime is removed with the application when you uninstall.
+
+Only use automated typing where permitted. Review PDF text before typing.
